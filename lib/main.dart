@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:math_expressions/math_expressions.dart';
-
 void main() {
   runApp(SimpleCalc());
 }
@@ -70,12 +69,19 @@ class _SimpleCalcState extends State<SimpleCalc> {
                               {
                                 setState(() {
                                   input='';
+                                  output='';
                                 });
                               }
                               else if(index ==1)
                               {
                                 setState(() {
                                   input =input.substring(0,input.length-1);
+                                });
+                              }
+                              else if(buttons[index]=='Ans')
+                              {
+                                setState(() {
+                                  input =output;
                                 });
                               }
                               else if(isOperator(buttons[index]))
@@ -88,20 +94,26 @@ class _SimpleCalcState extends State<SimpleCalc> {
                                 {
                                   print('No Operator');
                                 }
-                                else if(buttons[index]=='=')
+                                else if(buttons[index]== '=')
                                 {
-                                  try{
-                                    Expression exp =Parser().parse(input);
-                                    double result =exp.evaluate(EvaluationType.REAL, ContextModel());
-                                    setState(() {
-                                      output=result.toString();
-                                    });
-                                  }catch(error)
-                                  {
-                                    print(error);
-                                  }
+                              try
+                              {
+                                Expression exp =Parser().parse(input);
+                                double result =exp.evaluate(EvaluationType.REAL,
+                                    ContextModel());
+
+                                setState(() {
+                                  output =result.toString();
+                                });
+                              }
+                              catch(error)
+                              {
+                                print(error);
+                                print(input);
+                              }
 
                                 }
+
                                 else{
                                   setState(() {
                                     input =input+buttons[index];
